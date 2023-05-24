@@ -1,0 +1,149 @@
+
+1. Создание класса StarkNetBot и метода __init__:
+
+class StarkNetBot:
+    def __init__(self, contract_addresses, password):
+        self.contract_addresses = contract_addresses
+        self.password = password
+
+#StarkNetBot - это класс, который представляет бота для автоматических транзакций на StarkNet.
+#__init__ - это метод, который вызывается при создании экземпляра класса. Он принимает два аргумента: contract_addresses и password.
+#contract_addresses - это список адресов контрактов, на которых бот будет выполнять транзакции.
+#password - это пароль, который будет использоваться для аутентификации пользователя.
+
+2. Метод authenticate:
+
+def authenticate(self, password):
+    return password == self.password
+
+#authenticate - это метод, который проверяет, соответствует ли введенный пароль паролю администратора.
+#Он принимает аргумент password, который сравнивается с сохраненным паролем администратора (self.password).
+#Метод возвращает True, если пароли совпадают, и False в противном случае.
+
+3.М етоды set_time_interval и set_amount_interval:
+
+def set_time_interval(self, hours):
+    self.time_interval = hours * 3600
+
+def set_amount_interval(self, min_amount, max_amount):
+    self.min_amount = min_amount
+    self.max_amount = max_amount
+
+#set_time_interval - это метод, который устанавливает промежуток времени между транзакциями в часах.
+#Он принимает аргумент hours и сохраняет его значение, умноженное на 3600 (число секунд в часе), в атрибут self.time_interval.
+#set_amount_interval - это метод, который устанавливает интервал для значения amount.
+#Он принимает два аргумента: min_amount и max_amount, и сохраняет их значения в атрибуты self.min_amount и self.max_amount соответственно.
+
+4. Метод start_bot:
+
+def start_bot(self):
+    if not self.authenticate(input("Enter password: ")):
+        print("Authentication failed. Exiting...")
+        return
+
+    print("Bot started. Press Ctrl+C to stop.")
+
+    while True:
+        contract_address = random.choice(self.contract_addresses)
+        amount = random.uniform(self.min_amount, self.max_amount)
+
+        # Perform transaction logic here
+        print(f"Performing transaction on contract: {contract_address}, amount: {amount}")
+
+        try:
+            # Add your transaction code here using StarkNet API
+            pass
+        except Exception as e:
+            print(f"Transaction failed: {e}")
+
+        time.sleep(self.time_interval)
+
+start_bot - это метод, который запускает работу бота.
+Сначала он запрашивает пароль у пользователя и проверяет его с помощью метода authenticate.
+Если аутентификация не удалась, выводится сообщение "Authentication failed. Exiting..." и работа бота завершается.
+Затем выводится сообщение "Bot started. Press Ctrl+C to stop." для указания, что бот начал работу.
+В цикле while True выполняется логика транзакции:
+Выбирается случайный адрес контракта из списка contract_addresses с помощью функции random.choice.
+Значение amount выбирается случайным образом в интервале от self.min_amount до self.max_amount с помощью функции random.uniform.
+Вместо комментария # Perform transaction logic here вам необходимо добавить вашу реальную логику выполнения транзакции, используя API StarkNet или соответствующую библиотеку.
+Если при выполнении транзакции возникнет исключение, будет выведено сообщение об ошибке.
+После выполнения транзакции происходит ожидание времени, указанного в атрибуте self.time_interval, с помощью функции time.sleep.
+
+5. Пример использования:
+
+contract_addresses = ["0xContractAddress1", "0xContractAddress2"]
+password = "admin_password"
+
+bot = StarkNetBot(contract_addresses, password)
+bot.set_time_interval(2)  # Установить промежуток времени между транзакциями в 2 часа
+bot.set_amount_interval(0.1, 1.0)  # Установить интервал для значения amount от 0.1 до 1.0
+
+bot.start_bot()
+
+В этом примере создается экземпляр класса StarkNetBot с заданными адресами контрактов и паролем администратора.
+Затем вызываются методы set_time_interval и set_amount_interval, чтобы установить промежуток времени между транзакциями и интервал для значения amount.
+Наконец, вызывается метод start_bot, чтобы начать выполнение бота.
+
+Обратите внимание, что вам необходимо дополнить код реальной логикой выполнения транзакции с использованием StarkNet API или подходящей библиотеки. Также помните, что безопасность кода и хранение паролей выходят за рамки этого примера и требуют дополнительных мер безопасности.
+
+Конкретная реализация логики выполнения транзакции на StarkNet будет зависеть от используемой библиотеки и API. Вот общий шаблон, который можно использовать для отправки транзакций на StarkNet с использованием библиотеки web3.py:
+
+1. Установите библиотеку web3.py, если еще не установлена:
+
+pip install web3
+
+2. Импортируйте необходимые модули:
+
+from web3 import Web3
+from web3.auto import w3
+
+3. Создайте экземпляр класса Web3 и установите провайдера для подключения к StarkNet:
+
+provider_url = "https://starknet.ethereum.org/rpc"
+web3 = Web3(Web3.HTTPProvider(provider_url))
+
+4. Создайте функцию для выполнения транзакции на StarkNet:
+
+def execute_transaction(contract_address, amount):
+    # Здесь необходимо добавить код для выполнения транзакции на StarkNet
+    # Воспользуйтесь документацией StarkNet и web3.py для подробностей
+    pass
+
+5. Вставьте вызов функции execute_transaction в метод start_bot, где указан комментарий # Perform transaction logic here:
+
+try:
+    execute_transaction(contract_address, amount)
+    print(f"Transaction successful")
+except Exception as e:
+    print(f"Transaction failed: {e}")
+
+Внутри функции execute_transaction вам нужно будет создать соответствующий экземпляр контракта и отправить транзакцию на него, используя методы и атрибуты, предоставленные вашей библиотекой или API StarkNet.
+
+6. Дополните функцию execute_transaction согласно документации и примерам API StarkNet или используйте соответствующую библиотеку для выполнения реальной транзакции. Например, с использованием web3.py, код мог бы выглядеть примерно так:
+
+def execute_transaction(contract_address, amount):
+    # Создание экземпляра контракта
+    contract = web3.eth.contract(address=contract_address, abi=contract_abi)
+
+    # Получение аккаунта для отправки транзакции
+    account = web3.eth.account.from_key(private_key)
+
+    # Создание транзакции
+    transaction = contract.functions.method_name(...).buildTransaction({
+        'from': account.address,
+        'gas': 2000000,
+        'gasPrice': web3.toWei('5', 'gwei'),
+        'nonce': web3.eth.getTransactionCount(account.address),
+    })
+
+    # Подпись и отправка транзакции
+    signed_txn = account.sign_transaction(transaction)
+    tx_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
+
+    # Ожидание подтверждения транзакции
+    tx
+
+
+
+
+
